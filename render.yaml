@@ -1,0 +1,19 @@
+services:
+  - type: web
+    name: dexshop
+    runtime: node
+    plan: free
+    buildCommand: npm install --prefix backend && npm install --prefix frontend && npm run build --prefix frontend
+    startCommand: npm start --prefix backend
+    healthCheckPath: /api/health
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: DATABASE_URL
+        fromDatabase:
+          name: dexshop-db
+          property: connectionString
+
+databases:
+  - name: dexshop-db
+    plan: basic-256mb
